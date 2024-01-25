@@ -1,6 +1,7 @@
 
 import './App.css'
 import { Signin } from './components/Signin';
+import { Home } from './Home';
 
 import Weather from './Weather';
 import {BrowserRouter as Router, Route,Routes} from 'react-router-dom'
@@ -13,6 +14,7 @@ function App() {
         <Routes>
         <Route path="/" element={ <Signin />} />
         <Route path="/Weather" element={<Weather />} />
+        <Route path="/Home" element={<Home />} />
         </Routes>
       </div>
     </Router>
