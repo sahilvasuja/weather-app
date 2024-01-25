@@ -1,18 +1,20 @@
 
 
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import 'react-phone-number-input/style.css';
 import PhoneInput from 'react-phone-number-input';
-import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from '../firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export const Signin = () => {
-  const [phoneNumber, setPhoneNumber] = useState('');
+  // const [phoneNumber, setPhoneNumber] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [otp, setOtp] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
-  const [confirmObj, setConfirmObj] = useState('');
+  // const [confirmObj, setConfirmObj] = useState('');
+  const [confirmObj, setConfirmObj] = useState<ConfirmationResult | null>(null);
   const sendOtp = async () => {
     if (phoneNumber === '' || phoneNumber === undefined){
       toast.error('Invalid Phone Number. Please try again.');
@@ -32,7 +34,8 @@ export const Signin = () => {
   };
 
   const submitOTP = async () => {
-    if (otp === '' || otp === null) return;
+    // if (otp === '' || otp === null) return;
+    if (otp === '' || otp === null || !confirmObj) return;
     try {
    await confirmObj.confirm(otp);
       toast.success("OTP submitted successfully!");
@@ -54,7 +57,8 @@ export const Signin = () => {
           <PhoneInput
             placeholder="Enter phone number"
             value={phoneNumber}
-            onChange={setPhoneNumber}
+            onChange={(value) => setPhoneNumber(value || '')}
+            // onChange={setPhoneNumber}
             className="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>

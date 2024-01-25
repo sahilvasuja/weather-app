@@ -4,31 +4,95 @@ import SearchInput from './components/SearchInput';
 import WeatherGraph from './components/WeatherGraph';
 import { ToastContainer, toast } from 'react-toastify';
 
-interface WeatherProps {}
 
+// interface WeatherData {
+//   tomorrow: string;
+//   today: string;
+//   yesterday: string;
+//   name: string;
+//   sys: [];
+//   weather: [
+//     {
+//       description: string;
+//     }
+//   ];
+//   main: {
+//     temp: number;
+//     humidity: number;
+//   };
+// }
 interface WeatherData {
-  tomorrow: string;
-  today: string;
-  yesterday: string;
-  name: string;
-  sys: {
-    country: string;
+  today: {
+    base: string;
+    clouds: { all: number };
+    cod: number;
+    coord: { lon: number; lat: number };
+    dt: number;
+    id: number;
+    main: {
+      temp: number;
+      feels_like: number;
+      temp_min: number;
+      temp_max: number;
+      pressure: number;
+      humidity: number; // Include humidity
+    };
+    name: string;
+    sys: {
+      type: number;
+      id: number;
+      country: string;
+      sunrise: number;
+      sunset: number;
+    };
+    timezone: number;
+    visibility: number;
+    weather: Array<{ description: string }>; // Include description
+    wind: { speed: number; deg: number };
   };
-  weather: [
-    {
+  tomorrow: {
+    dt: number;
+    sunrise: number;
+    sunset: number;
+    moonrise: number;
+    moonset: number;
+    temp: {
+      day: number;
+      eve: number;
+      max: number;
+      min: number;
+      morn: number;
+      night: number;
+    };
+    humidity?: number;
+    weather: Array<{
+      id: number;
+      main: string;
       description: string;
-    }
-  ];
-  main: {
+      icon: string;
+    }>; 
+    // Include other properties
+  };
+  yesterday: {
+    dt: number;
+    sunrise: number;
+    sunset: number;
     temp: number;
-    humidity: number;
+    feels_like: number;
+    humidity?: number;
+    weather: Array<{
+      id: number;
+      main: string;
+      description: string;
+      icon: string;
+    }>; 
+    // Include other properties
   };
 }
 
-function Weather({}: WeatherProps): JSX.Element {
-  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
+const Weather: React.FC = (): JSX.Element => {
 
-//   const apiKey = process.env.REACT_APP_API_KEY || '';
+  const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
 
   const apiKey = '3ab048289c037f4dc089d11595ad448d';
   const kelvinToCelsius = (kelvin: number): number => {
