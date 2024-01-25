@@ -1,26 +1,9 @@
 // Weather.tsx
 import  { useState } from 'react';
 import SearchInput from './components/SearchInput';
-import WeatherGraph from './components/WeatherGraph';
+import WeatherGraph from './components/Weather/WeatherGraph';
 import { ToastContainer, toast } from 'react-toastify';
-
-
-// interface WeatherData {
-//   tomorrow: string;
-//   today: string;
-//   yesterday: string;
-//   name: string;
-//   sys: [];
-//   weather: [
-//     {
-//       description: string;
-//     }
-//   ];
-//   main: {
-//     temp: number;
-//     humidity: number;
-//   };
-// }
+import React from 'react';
 interface WeatherData {
   today: {
     base: string;
@@ -35,7 +18,7 @@ interface WeatherData {
       temp_min: number;
       temp_max: number;
       pressure: number;
-      humidity: number; // Include humidity
+      humidity: number; 
     };
     name: string;
     sys: {
@@ -47,7 +30,7 @@ interface WeatherData {
     };
     timezone: number;
     visibility: number;
-    weather: Array<{ description: string }>; // Include description
+    weather: Array<{ description: string }>; 
     wind: { speed: number; deg: number };
   };
   tomorrow: {
@@ -71,7 +54,7 @@ interface WeatherData {
       description: string;
       icon: string;
     }>; 
-    // Include other properties
+    
   };
   yesterday: {
     dt: number;
@@ -86,7 +69,6 @@ interface WeatherData {
       description: string;
       icon: string;
     }>; 
-    // Include other properties
   };
 }
 
@@ -143,8 +125,7 @@ const Weather: React.FC = (): JSX.Element => {
     <div className="min-h-screen w-full flex items-center justify-center bg-gray-100">
     <div className="bg-white p-8 rounded-md shadow-md w-full md:w-2/3 lg:w-1/2 xl:w-1/3">
     
-        {/* <h1 className="text-3xl font-bold mb-4">Weather App</h1> */}
-        <h1 className="text-4xl font-bold mb-6 text-center">Weather App</h1>
+     <h1 className="text-4xl font-bold mb-6 text-center">Weather App</h1>
     
         <SearchInput onSearch={getWeather} />
         

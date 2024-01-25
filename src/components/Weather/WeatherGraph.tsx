@@ -1,45 +1,8 @@
 import { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
-interface WeatherGraphProps {
-  weatherData: WeatherData | null;
-}
+import  { WeatherGraphProps } from './weatherInterfaces';
 
-interface WeatherData {
-  today: {
-    base: string;
-    clouds: { all: number };
-    cod: number;
-    coord: { lon: number; lat: number };
-    dt: number;
-    id: number;
-    main: {
-      temp: number;
-      feels_like: number;
-      temp_min: number;
-      temp_max: number;
-      pressure: number;
-      // Add other properties as needed
-    };
-    name: string;
-    sys: {
-      type: number;
-      id: number;
-      country: string;
-      sunrise: number;
-      sunset: number;
-    };
-    timezone: number;
-    visibility: number;
-    weather: Array<{ /* describe weather properties */ }>;
-    wind: { speed: number; deg: number };
-  };
-  tomorrow: {
-    // Describe properties for tomorrow
-  };
-  yesterday: {
-    // Describe properties for yesterday
-  };
-}
+
 
 const WeatherGraph: React.FC<WeatherGraphProps> = ({ weatherData }) => {
   const chartRef = useRef(null);
@@ -59,7 +22,11 @@ console.log(weatherData)
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
     d3.select(chartRef.current).select('svg').remove();
-
+    if (!weatherData) {
+      // Optionally handle the case when weatherData is null
+      return;
+    }
+    else{
     const svg = d3
       .select(chartRef.current)
       .append('svg')
@@ -76,9 +43,11 @@ console.log(weatherData)
 
     const xScale = d3.scaleBand().domain(data.map((d) => d.label)).range([0, width]).padding(0.2);
     const yTemperatureScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d.temperature)]).range([height, 0]);
-    const yHumidityScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d.humidity)]).range([height, 0]);
+    // const yHumidityScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d.humidity)]).range([height, 0]);
 
     svg.append('g').attr('transform', `translate(0, ${height})`).call(d3.axisBottom(xScale));
+
+    
 
     const temperatureLine = d3
       .line()
@@ -111,8 +80,8 @@ console.log(weatherData)
       .text((d) => `${d.temperature.toFixed(2)} °C`);
 
     svg.append('g').call(d3.axisLeft(yTemperatureScale)).append('text').attr('transform', 'rotate(-90)').attr('y', 6).attr('dy', '-3em').attr('text-anchor', 'end').attr('fill', '#69b3a2').text('Temperature (°C)');
-  };
-
+  }
+  }
   return <div ref={chartRef} ></div>;
 };
 
