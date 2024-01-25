@@ -59,7 +59,7 @@ export const Signin = () => {
             value={phoneNumber}
             onChange={(value) => setPhoneNumber(value || '')}
             // onChange={setPhoneNumber}
-            className="w-full p-2 border rounded-md focus:outline-none focus:border-blue-500"
+            className="w-full p-2 border  rounded-md focus:outline-none focus:border-blue-500"
           />
         </div>
 
@@ -83,7 +83,7 @@ export const Signin = () => {
                 id="otp"
                 value={otp}
                 onChange={(e) => setOtp(e.target.value)}
-                className="flex-1 p-2 border rounded-md focus:outline-none focus:border-blue-500"
+                className="flex-1 p-2 border  rounded-md focus:outline-none focus:border-blue-500"
                 maxLength={6}
               />
               <button
