@@ -41,7 +41,7 @@ const nagivate=useNavigate()
    await confirmObj.confirm(otp);
       toast.success("OTP submitted successfully!");
       // window.location.href = '/weather';
-      nagivate('/home')
+      nagivate('/weather')
     } catch (error) {
       console.log(error);
       toast.error('Invalid OTP. Please try again.');
