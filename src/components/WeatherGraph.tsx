@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-const WeatherGraph = ({ weatherData }) => {
+const WeatherGraph = ({ weatherData }:any) => {
   const chartRef = useRef(null);
 
   useEffect(() => {
@@ -18,6 +18,7 @@ const WeatherGraph = ({ weatherData }) => {
     const margin = { top: 20, right: 20, bottom: 50, left: 70 };
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
+    d3.select(chartRef.current).select('svg').remove();
 
     const svg = d3
       .select(chartRef.current)
@@ -72,7 +73,10 @@ const WeatherGraph = ({ weatherData }) => {
     svg.append('g').call(d3.axisLeft(yTemperatureScale)).append('text').attr('transform', 'rotate(-90)').attr('y', 6).attr('dy', '-3em').attr('text-anchor', 'end').attr('fill', '#69b3a2').text('Temperature (°C)');
   };
 
-  return <div ref={chartRef}></div>;
+  return <div ref={chartRef} ></div>;
 };
 
 export default WeatherGraph;
+
+
+

@@ -8,17 +8,16 @@ import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import { auth } from '../firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { useNavigate, Link } from 'react-router-dom';
-
 export const Signin = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [otp, setOtp] = useState('');
   const [showOtpInput, setShowOtpInput] = useState(false);
   const [confirmObj, setConfirmObj] = useState('');
-  const [error, setError] = useState('');
-
   const sendOtp = async () => {
-    if (phoneNumber === '' || phoneNumber === undefined) return setError("Please enter a valid OTP");
+    if (phoneNumber === '' || phoneNumber === undefined){
+      toast.error('Invalid Phone Number. Please try again.');
+  
+    } 
 
     const res = await setupRecap(phoneNumber);
     setConfirmObj(res);
@@ -26,7 +25,7 @@ export const Signin = () => {
     toast.success('OTP sent successfully!');
   };
 
-  const setupRecap = (phoneNumber) => {
+  const setupRecap = (phoneNumber: string) => {
     const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {});
     recaptchaVerifier.render();
     return signInWithPhoneNumber(auth, phoneNumber, recaptchaVerifier);
@@ -35,7 +34,7 @@ export const Signin = () => {
   const submitOTP = async () => {
     if (otp === '' || otp === null) return;
     try {
-      const res = await confirmObj.confirm(otp);
+   await confirmObj.confirm(otp);
       toast.success("OTP submitted successfully!");
       window.location.href = '/weather';
     } catch (error) {

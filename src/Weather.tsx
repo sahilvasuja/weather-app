@@ -1,7 +1,8 @@
 // Weather.tsx
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import SearchInput from './components/SearchInput';
 import WeatherGraph from './components/WeatherGraph';
+import { ToastContainer, toast } from 'react-toastify';
 
 interface WeatherProps {}
 
@@ -65,7 +66,10 @@ function Weather({}: WeatherProps): JSX.Element {
           yesterday: yesterdayData.current,
           tomorrow: tomorrowData.daily[0],
         });
+        toast.success('Result display successfully!');
       } catch (error) {
+        toast.error('Invalid City. Please try again.');
+  
         console.error('Error fetching weather data:', error);
       }
     };    
@@ -118,12 +122,12 @@ function Weather({}: WeatherProps): JSX.Element {
     )}
        
        
-        <div className='my-12'>
+        <div className='my-12 '>
         <WeatherGraph  weatherData={weatherData} />
         </div>
          
       </div>
-   
+      <ToastContainer />
     </div>
   );
 }
