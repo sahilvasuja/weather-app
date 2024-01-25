@@ -6,7 +6,6 @@ import  { WeatherGraphProps } from './weatherInterfaces';
 
 const WeatherGraph: React.FC<WeatherGraphProps> = ({ weatherData }) => {
   const chartRef = useRef(null);
-console.log(weatherData)
   useEffect(() => {
     if (weatherData) {
       drawGraph();
@@ -37,12 +36,12 @@ console.log(weatherData)
 
     const data = [
       { label: 'Yesterday', temperature: kelvinToCelsius(weatherData.yesterday.temp), humidity: weatherData.yesterday.humidity },
-      { label: 'Today', temperature: kelvinToCelsius(weatherData.today.main.temp), humidity: weatherData.today.main.humidity },
+      { label: 'Today', temperature: kelvinToCelsius(weatherData?.today?.main.temp || 0), humidity: weatherData?.today?.main.humidity },
       { label: 'Tomorrow', temperature: kelvinToCelsius(weatherData.tomorrow.temp.day), humidity: weatherData.tomorrow.humidity },
     ];
 
     const xScale = d3.scaleBand().domain(data.map((d) => d.label)).range([0, width]).padding(0.2);
-    const yTemperatureScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d.temperature)]).range([height, 0]);
+    const yTemperatureScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d.temperature)|| 0 ]).range([height, 0]);
     // const yHumidityScale = d3.scaleLinear().domain([0, d3.max(data, (d) => d.humidity)]).range([height, 0]);
 
     svg.append('g').attr('transform', `translate(0, ${height})`).call(d3.axisBottom(xScale));
@@ -50,8 +49,8 @@ console.log(weatherData)
     
 
     const temperatureLine = d3
-      .line()
-      .x((d) => xScale(d.label) + xScale.bandwidth() / 2)
+    .line<{ label: string; temperature: number }>()
+    .x((d) => xScale(d.label)! + xScale.bandwidth() / 2)
       .y((d) => yTemperatureScale(d.temperature));
 
     svg.append('path').data([data]).attr('d', temperatureLine).attr('fill', 'none').attr('stroke', '#69b3a2');
@@ -62,7 +61,7 @@ console.log(weatherData)
       .enter()
       .append('circle')
       .attr('class', 'dot')
-      .attr('cx', (d) => xScale(d.label) + xScale.bandwidth() / 2)
+      .attr('cx', (d) => xScale(d.label)! + xScale.bandwidth() / 2)
       .attr('cy', (d) => yTemperatureScale(d.temperature))
       .attr('r', 5)
       .style('fill', '#69b3a2');
@@ -73,7 +72,8 @@ console.log(weatherData)
       .enter()
       .append('text')
       .attr('class', 'text-label')
-      .attr('x', (d: { label: string | undefined; }) => xScale(d.label) + xScale.bandwidth() / 2)
+      .attr('x', (d) => (xScale(d.label) ?? 0) + xScale.bandwidth() / 2)
+      // .attr('x', (d: { label: string | undefined; }) => xScale(d.label) + xScale.bandwidth() / 2)
       .attr('y', (d) => yTemperatureScale(d.temperature) - 10)
       .style('text-anchor', 'middle')
       .style('font-weight', (d) => (d.label === 'Today' ? 'bold' : 'normal'))
