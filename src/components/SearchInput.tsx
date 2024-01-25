@@ -24,7 +24,7 @@ function SearchInput({ onSearch }:SearchInputProps) {
         placeholder="Enter city"
         value={city}
         onChange={handleInputChange}
-        className="flex-1 p-4 border border-gray-300 rounded-full focus:outline-none focus:border-blue-500 transition-all duration-300"
+        className="flex-1 p-4 border border-gray-300 rounded-full focus:outline-none border-blue-500 transition-all duration-300"
       />
       <button
         onClick={handleSearch}

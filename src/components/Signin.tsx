@@ -8,6 +8,7 @@ import { ConfirmationResult, RecaptchaVerifier, signInWithPhoneNumber } from "fi
 import { auth } from '../firebase';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 export const Signin = () => {
   // const [phoneNumber, setPhoneNumber] = useState('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
@@ -26,7 +27,7 @@ export const Signin = () => {
     setShowOtpInput(true);
     toast.success('OTP sent successfully!');
   };
-
+const nagivate=useNavigate()
   const setupRecap = (phoneNumber: string) => {
     const recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {});
     recaptchaVerifier.render();
@@ -39,7 +40,8 @@ export const Signin = () => {
     try {
    await confirmObj.confirm(otp);
       toast.success("OTP submitted successfully!");
-      window.location.href = '/weather';
+      // window.location.href = '/weather';
+      nagivate('/weather')
     } catch (error) {
       console.log(error);
       toast.error('Invalid OTP. Please try again.');
