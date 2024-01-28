@@ -78,8 +78,7 @@ const Weather: React.FC = (): JSX.Element => {
 
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [appColorIndex, setAppColorIndex] = useState(0);
-  
-
+  const [searchSuccess, setSearchSuccess] = useState(true);
   const weatherColors = ['#3498db', '#e74c3c', '#2ecc71', '#f39c12', '#8e44ad'];
   const apiKey = '3ab048289c037f4dc089d11595ad448d';
   const kelvinToCelsius = (kelvin: number): number => {
@@ -127,10 +126,12 @@ const Weather: React.FC = (): JSX.Element => {
           yesterday: yesterdayData.current,
           tomorrow: tomorrowData.daily[0],
         });
+        setSearchSuccess(true);
         toast.success('Result display successfully!');
       } catch (error) {
+        setSearchSuccess(false);
         toast.error('Invalid City. Please try again.');
-  
+        
         console.error('Error fetching weather data:', error);
       }
     };    
@@ -150,8 +151,8 @@ const Weather: React.FC = (): JSX.Element => {
     <div className="mb-8">
       <SearchInput onSearch={getWeather} />
     </div>
-    
-    {weatherData && (
+    {searchSuccess ? (
+    weatherData && (
       <div className="mt-8">
         <h1 className="text-2xl mb-4 text-center justify-center flex gap-2">
         <MdLocationOn className="text-3xl text-gray-600 inline-block " />
@@ -190,11 +191,18 @@ const Weather: React.FC = (): JSX.Element => {
           </div>
         </div>
       </div>
-    )}
+    )
+    ) : (
+      <div className="mt-8 text-center bg-red-500 text-white p-4 rounded-md">
+      <p>Error fetching Weather Data. Please try again with a Valid City.</p>
+    </div>
     
-    <div className='my-16 w-5/12 '>
+    )
+  }
+    
+   { searchSuccess && <div className='my-16 w-5/12 '>
           <WeatherGraph weatherData={weatherData} />
-        </div>
+        </div> }
 
   </div>
   <ToastContainer />
